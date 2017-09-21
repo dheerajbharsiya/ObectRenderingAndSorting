@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style></style>
+</head>
+
+<body>
+    <div id="employees">
+
+    </div>
+    <div class="selectForm">
+        <select onchange="sortBy()" id="selectedElement">
+        <option value="name">ID</option>
+        <option value="id">Name</option>
+      </select>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<script>
+    var employeeIds = {
+        "abc": { name: 'dheeraj', address: 'sonkatch1' },
+        "bbc1": { name: 'aheeraj1', address: 'sonkatch2' },
+        "cbc2": { name: 'cheeraj3', address: 'sonkatch3' },
+        "abc3": { name: 'dheeraj2', address: 'sonkatch4' }
+    }
+
+    function createElements(employeeIds) {
+        $("#employees")[0].innerHTML = '';
+        for (emp in employeeIds) {
+            if (employeeIds.hasOwnProperty(emp)) {
+                appneElement(employeeIds[emp]);
+            }
+        }
+
+    }
+
+    function appneElement(employee) {
+        $("#employees").append(`<div class='employee'>
+                                        <span class='name'>`+ employee.name + `</span>
+                                        <span class='name'>`+ employee.address + `</span>
+                                </div>`);
+    }
+
+    function sortBy() {
+        var sortParam = document.querySelector('#selectedElement').value;
+        if (sortParam !== 'id') {
+            employeeIds = sortObecnt(employeeIds);
+            console.log(employeeIds);
+            createElements(employeeIds);
+        } else {
+            var a = [];
+            for (key in employeeIds) {
+                if (employeeIds.hasOwnProperty(key)) {
+                    a.push(employeeIds[key]);
+                }
+            }
+            var sorted = {};
+
+            a.sort(function (a, b) {
+                var x = a.name.toLowerCase();
+                var y = b.name.toLowerCase();
+                return x < y ? -1 : x > y ? 1 : 0;
+            });
+            for (var key = 0; key < a.length; key++) {
+                sorted[a[key]] = employeeIds[a[key]];
+            }
+
+            createElements(sorted);
+        }
+
+    }
+
+    function sortObecnt(o) {
+        var sorted = {},
+            key, a = [];
+
+        for (key in o) {
+            if (o.hasOwnProperty(key)) {
+                a.push(key);
+            }
+        }
+
+        a.sort();
+
+        for (key = 0; key < a.length; key++) {
+            sorted[a[key]] = o[a[key]];
+        }
+        return sorted;
+    }
+
+
+    createElements(employeeIds);
+
+</script>
+
+</html>
